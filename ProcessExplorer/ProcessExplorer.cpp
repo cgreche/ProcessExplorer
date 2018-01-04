@@ -22,13 +22,6 @@ public:
 	friend void editFilter_onChange(EditBox &edit);
 	MainWindow();
 
-	void step() {
-		if (editFilter.text().length() > 0) {
-			string &filter = editFilter.text();
-
-		}
-	}
-
 	virtual void onCloseEvent() {
 		UI::UIQuit();
 	}
@@ -115,7 +108,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	mainWindow.setVisible(true);
 
 	while (uilib::UI::UIProcess()) {
-		mainWindow.step();
+
 	}
 
 	return 0;
