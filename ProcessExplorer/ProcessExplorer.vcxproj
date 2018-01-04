@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{20EE4665-0FA9-4FD7-8D5B-2F79E95307A0}</ProjectGuid>
+    <RootNamespace>ProcessExplorer</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="ProcessExplorer.h" />
+    <ClInclude Include="ProcessSpawner.h" />
+    <ClInclude Include="process\process.h" />
+    <ClInclude Include="uilib\lib\dir.h" />
+    <ClInclude Include="uilib\lib\file.h" />
+    <ClInclude Include="uilib\lib\matrix.h" />
+    <ClInclude Include="uilib\lib\osd\osdfile.h" />
+    <ClInclude Include="uilib\lib\pmfile.h" />
+    <ClInclude Include="uilib\lib\point.h" />
+    <ClInclude Include="uilib\lib\rect.h" />
+    <ClInclude Include="uilib\lib\size.h" />
+    <ClInclude Include="uilib\lib\string.h" />
+    <ClInclude Include="uilib\lib\time.h" />
+    <ClInclude Include="uilib\lib\timer.h" />
+    <ClInclude Include="uilib\types.h" />
+    <ClInclude Include="uilib\ui\control.h" />
+    <ClInclude Include="uilib\ui\controls\button.h" />
+    <ClInclude Include="uilib\ui\controls\checkbox.h" />
+    <ClInclude Include="uilib\ui\controls\combobox.h" />
+    <ClInclude Include="uilib\ui\controls\edit.h" />
+    <ClInclude Include="uilib\ui\controls\editbox.h" />
+    <ClInclude Include="uilib\ui\controls\gridview.h" />
+    <ClInclude Include="uilib\ui\controls\groupbox.h" />
+    <ClInclude Include="uilib\ui\controls\label.h" />
+    <ClInclude Include="uilib\ui\controls\listview.h" />
+    <ClInclude Include="uilib\ui\controls\radiobutton.h" />
+    <ClInclude Include="uilib\ui\controls\scrollbar.h" />
+    <ClInclude Include="uilib\ui\controls\scrollview.h" />
+    <ClInclude Include="uilib\ui\controls\separator.h" />
+    <ClInclude Include="uilib\ui\controls\statusbar.h" />
+    <ClInclude Include="uilib\ui\controls\textlink.h" />
+    <ClInclude Include="uilib\ui\dialogs\filedialog.h" />
+    <ClInclude Include="uilib\ui\event.h" />
+    <ClInclude Include="uilib\ui\font.h" />
+    <ClInclude Include="uilib\ui\impl\scrollbarimpl.h" />
+    <ClInclude Include="uilib\ui\impl\scrollviewimpl.h" />
+    <ClInclude Include="uilib\ui\layout\horizontallayout.h" />
+    <ClInclude Include="uilib\ui\layout\layout.h" />
+    <ClInclude Include="uilib\ui\layout\linearlayout.h" />
+    <ClInclude Include="uilib\ui\layout\verticallayout.h" />
+    <ClInclude Include="uilib\ui\menu.h" />
+    <ClInclude Include="uilib\ui\osd\windows\osdbase.h" />
+    <ClInclude Include="uilib\ui\osd\windows\osdscrollbar.h" />
+    <ClInclude Include="uilib\ui\osd\windows\osdscrollview.h" />
+    <ClInclude Include="uilib\ui\osd\windows\windowscontrols.h" />
+    <ClInclude Include="uilib\ui\painting\bitmap.h" />
+    <ClInclude Include="uilib\ui\painting\color.h" />
+    <ClInclude Include="uilib\ui\painting\painter.h" />
+    <ClInclude Include="uilib\ui\painting\paintingdevice.h" />
+    <ClInclude Include="uilib\ui\painting\palette.h" />
+    <ClInclude Include="uilib\ui\painting\rgb.h" />
+    <ClInclude Include="uilib\ui\painting\transform.h" />
+    <ClInclude Include="uilib\ui\uibase.h" />
+    <ClInclude Include="uilib\ui\uiobj.h" />
+    <ClInclude Include="uilib\ui\uitools.h" />
+    <ClInclude Include="uilib\ui\window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ProcessExplorer.cpp" />
+    <ClCompile Include="ProcessSpawner.cpp" />
+    <ClCompile Include="process\process.cpp" />
+    <ClCompile Include="uilib\lib\dir.cpp" />
+    <ClCompile Include="uilib\lib\file.cpp" />
+    <ClCompile Include="uilib\lib\matrix.cpp" />
+    <ClCompile Include="uilib\lib\osd\osdfile.cpp" />
+    <ClCompile Include="uilib\lib\osd\strfuncs.cpp" />
+    <ClCompile Include="uilib\lib\osd\time.cpp" />
+    <ClCompile Include="uilib\lib\pmfile.cpp" />
+    <ClCompile Include="uilib\lib\string.cpp" />
+    <ClCompile Include="uilib\lib\timer.cpp" />
+    <ClCompile Include="uilib\ui\control.cpp" />
+    <ClCompile Include="uilib\ui\controls\button.cpp" />
+    <ClCompile Include="uilib\ui\controls\checkbox.cpp" />
+    <ClCompile Include="uilib\ui\controls\combobox.cpp" />
+    <ClCompile Include="uilib\ui\controls\editbox.cpp" />
+    <ClCompile Include="uilib\ui\controls\gridview.cpp" />
+    <ClCompile Include="uilib\ui\controls\groupbox.cpp" />
+    <ClCompile Include="uilib\ui\controls\label.cpp" />
+    <ClCompile Include="uilib\ui\controls\listview.cpp" />
+    <ClCompile Include="uilib\ui\controls\radiobutton.cpp" />
+    <ClCompile Include="uilib\ui\controls\scrollbar.cpp" />
+    <ClCompile Include="uilib\ui\controls\scrollview.cpp" />
+    <ClCompile Include="uilib\ui\controls\separator.cpp" />
+    <ClCompile Include="uilib\ui\controls\statusbar.cpp" />
+    <ClCompile Include="uilib\ui\controls\textlink.cpp" />
+    <ClCompile Include="uilib\ui\dialogs\filedialog.cpp" />
+    <ClCompile Include="uilib\ui\font.cpp" />
+    <ClCompile Include="uilib\ui\layout\horizontallayout.cpp" />
+    <ClCompile Include="uilib\ui\layout\layout.cpp" />
+    <ClCompile Include="uilib\ui\layout\linearlayout.cpp" />
+    <ClCompile Include="uilib\ui\layout\verticallayout.cpp" />
+    <ClCompile Include="uilib\ui\menu.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdbase.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdbutton.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdcheckbox.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdcombobox.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdcontrol.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdeditbox.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdfiledialog.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdfont.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdgridview.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdgroupbox.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdlabel.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdlistview.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdmenu.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdpaintingdevice.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdradiobutton.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdscrollbar.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdscrollview.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdstatusbar.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osduitools.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\osdwindow.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\uiobject.cpp" />
+    <ClCompile Include="uilib\ui\osd\windows\windowscontrols.cpp" />
+    <ClCompile Include="uilib\ui\painting\bitmap.cpp" />
+    <ClCompile Include="uilib\ui\painting\painter.cpp" />
+    <ClCompile Include="uilib\ui\painting\paintingdevice.cpp" />
+    <ClCompile Include="uilib\ui\painting\palette.cpp" />
+    <ClCompile Include="uilib\ui\painting\transform.cpp" />
+    <ClCompile Include="uilib\ui\uibase.cpp" />
+    <ClCompile Include="uilib\ui\uiobj.cpp" />
+    <ClCompile Include="uilib\ui\uitools.cpp" />
+    <ClCompile Include="uilib\ui\window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="uilib\hello.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="uilib\ui\osd\windows\rfuia.Manifest" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
