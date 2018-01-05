@@ -1,7 +1,7 @@
 
 //Process
 //Filename: process.h
-//Last edit: 02/01/2018 21:57 (UTC-3)
+//Last edit: 05/01/2018 00:22 (UTC-3)
 //Author: CGR
 
 #ifndef __PROCESS_H__
@@ -59,6 +59,8 @@ class CProcess
 	void removeAllThreads();
 	void removeThread();
 
+	~CProcess();
+
 public:
 
 	enum CreationError
@@ -86,6 +88,8 @@ public:
 
 	CThread *createThread(LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParam, CThread::ThreadState initialState);
 	CThread *openThread(DWORD id);
+
+	bool is64BitProcess();
 
 	HWND getMainWindow();
 

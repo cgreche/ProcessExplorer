@@ -1,7 +1,7 @@
 
 //Process
 //Filename: process.cpp
-//Last edit: 02/01/2018 21:58 (UTC-3)
+//Last edit: 05/01/2018 00:22 (UTC-3)
 //Author: CGR
 
 #define WIN32_LEAN_AND_MEAN
@@ -77,6 +77,12 @@ CProcess::CProcess(HANDLE hProcess)
 {
 	m_hProcess = hProcess;
 	m_processId = ::GetProcessId(m_hProcess);
+}
+
+CProcess::~CProcess() {
+	for (CThread *thread : m_threadList) {
+		thread->close();
+	}
 }
 
 BYTE *CProcess::alloc(size_t size)
@@ -211,6 +217,12 @@ CThread *CProcess::openThread(DWORD threadId)
 
 	return thread;
 }
+
+bool CProcess::is64BitProcess() {
+	BOOL ret;
+	return ::IsWow64Process(m_hProcess,&ret) && ret == FALSE;
+}
+
 
 std::vector<CThread*>& CProcess::threadList()
 {

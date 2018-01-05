@@ -1,7 +1,7 @@
 
 //UITools
 // File: uitools.cpp
-// Last edit: 07/08/2014 02:54 (UTC-3)
+// Last edit: 05/01/2018 00:22 (UTC-3)
 // Author: CGR
 
 #include "uibase.h"
@@ -47,6 +47,7 @@ namespace uilib {
 				*pFileList = fileDialog.selectedFileNames();
 			if (pFileCount)
 				*pFileCount = fileDialog.selectedCount();
+			ret = fileDialog.currentPath();
 			return &ret;
 		}
 

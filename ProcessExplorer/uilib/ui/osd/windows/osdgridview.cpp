@@ -388,9 +388,9 @@ namespace uilib {
 						LVHITTESTINFO info = { 0 };
 						info.pt = curPos;
 						ListView_SubItemHitTest(m_hwnd, &info);
+						ref().m_selectedRow = nmlv->iItem;
+						ref().m_selectedCol = nmlv->iSubItem;
 						if (ref().m_onItemSelect) {
-							ref().m_selectedRow = nmlv->iItem;
-							ref().m_selectedCol = nmlv->iSubItem;
 							ref().m_onItemSelect(ref(), nmlv->iItem, info.iSubItem);
 						}
 					}
