@@ -1,7 +1,7 @@
 
 //String
 // File: string.cpp
-// Last Edit: 02/11/2017 14:23 (UTC-3)
+// Last Edit: 07/01/2018 15:29 (UTC-3)
 // Author: CGR
 
 #include <memory.h>
@@ -277,7 +277,7 @@ namespace uilib {
 		ret.resize(this->size());
 		char *d = ret.m_buf;
 		while (*c) {
-			*d++ = toupper(*c++);
+			*d++ = ::toupper(*c++);
 		}
 		*d = '\0';
 		return ret;
@@ -289,7 +289,7 @@ namespace uilib {
 		ret.resize(this->size());
 		char *d = ret.m_buf;
 		while (*c) {
-			*d++ = tolower(*c++);
+			*d++ = ::tolower(*c++);
 		}
 		*d = '\0';
 		return ret;

@@ -126,6 +126,7 @@
     <ClInclude Include="ProcessExplorer.h" />
     <ClInclude Include="ProcessSpawner.h" />
     <ClInclude Include="process\process.h" />
+    <ClInclude Include="process\win32process.h" />
     <ClInclude Include="uilib\lib\dir.h" />
     <ClInclude Include="uilib\lib\file.h" />
     <ClInclude Include="uilib\lib\matrix.h" />
@@ -183,7 +184,7 @@
   <ItemGroup>
     <ClCompile Include="ProcessExplorer.cpp" />
     <ClCompile Include="ProcessSpawner.cpp" />
-    <ClCompile Include="process\process.cpp" />
+    <ClCompile Include="process\win32process.cpp" />
     <ClCompile Include="uilib\lib\dir.cpp" />
     <ClCompile Include="uilib\lib\file.cpp" />
     <ClCompile Include="uilib\lib\matrix.cpp" />

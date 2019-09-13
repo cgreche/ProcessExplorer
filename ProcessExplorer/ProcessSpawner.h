@@ -8,10 +8,10 @@
 class ProcessSpawner {
 
 public:
-	static CProcess *OpenByWindowName(const char *win_name);
-	static CProcess *OpenByProcessName(const char *proc_name);
-	static CProcess *Open(DWORD pid);
-	static CProcess *Create(const char *appname, CThread::ThreadState initalState = CThread::NORMAL, const char *initial_workpath = NULL, CProcess::CreationError *pErr = NULL, bool openMainThread = true);
+	static CProcess *GetByWindowName(const char *win_name);
+	static CProcess *Get(const char *processName);
+	static CProcess *Get(unsigned int processId);
+	static CProcess *Create(const char *appFileName, CThread::ThreadState initalState = CThread::NORMAL, const char *initialWorkpath = NULL, CProcess::CreationError *pErr = NULL);
 	static bool GetProcessList(std::vector<ProcessBasicInfo> &processList);
 };
 

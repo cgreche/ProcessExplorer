@@ -86,7 +86,7 @@ static void buttonLoadDll_onClick(Button &button) {
 	ListViewItem* item = mainWindow->grid.item(mainWindow->grid.selectedRow(), 0);
 	if (item) {
 		int pid = item->text().toInteger();
-		CProcess* process = ProcessSpawner::Open(pid);
+		CProcess* process = ProcessSpawner::Get(pid);
 		if (!process) {
 			Message::error(NULL, "Couldn't open process");
 			return;
@@ -95,15 +95,14 @@ static void buttonLoadDll_onClick(Button &button) {
 		//bool is32BitProcess = !process->is64BitProcess();
 
 		FARPROC loadLibraryAddr = ::GetProcAddress(::GetModuleHandle(L"kernel32.dll"), "LoadLibraryA");
-		BYTE *stub = process->alloc(256);
-		process->write(stub, (void*)dllPath.data(), dllPath.length());
-		CThread* thread = process->createThread((LPTHREAD_START_ROUTINE)loadLibraryAddr, stub, CThread::NORMAL);
+		const void *stub = process->alloc(260);
+		process->write(stub, (const unsigned char*)dllPath.data(), dllPath.length());
+		CThread* thread = process->createThread(loadLibraryAddr, (void*)stub, CThread::NORMAL);
 		if (thread) {
-			thread->wait();
-			thread->close();
+			thread->sync();
 		}
 		process->free(stub);
-		process->close();
+		//TODO: deal with memory leak here
 	}
 }
 
@@ -127,21 +126,20 @@ static void buttonLoadProcess_onClick(Button &button) {
 		return;
 	CProcess *process = ProcessSpawner::Create(appName.data(), CThread::SUSPENDED);
 	if (process) {
-		CThread *mainThread = process->threadList()[0];
+		CThread *mainThread = process->thread(process->threadList()[0]);
 
 		FARPROC loadLibraryAddr = ::GetProcAddress(::GetModuleHandle(L"kernel32.dll"), "LoadLibraryA");
-		BYTE *stub = process->alloc(256);
-		process->write(stub, (void*)dllName.data(), dllName.length());
-		CThread* thread = process->createThread((LPTHREAD_START_ROUTINE)loadLibraryAddr, stub, CThread::NORMAL);
+		const void *stub = process->alloc(256);
+		process->write(stub, (const unsigned char*)dllName.data(), dllName.length());
+		CThread* thread = process->createThread(loadLibraryAddr, (void*)stub, CThread::NORMAL);
 		if (thread) {
-			thread->wait();
-			thread->close();
+			thread->sync();
 		}
 		process->free(stub);
 
 		mainThread->resume();
-		mainThread->wait();
-		process->close();
+		mainThread->sync();
+		//TODO: deal with memory leak
 	}
 }
 

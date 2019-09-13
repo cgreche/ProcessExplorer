@@ -1,8 +1,9 @@
 #include "process/process.h"
+#include "process/win32process.h"
 #include "ProcessSpawner.h"
 #include <tlhelp32.h>
 
-CProcess *ProcessSpawner::OpenByWindowName(const char *winName) {
+CProcess *ProcessSpawner::GetByWindowName(const char *winName) {
 	HWND hwnd = ::FindWindow(0, winName);
 	if (!hwnd) return false;
 
@@ -10,10 +11,10 @@ CProcess *ProcessSpawner::OpenByWindowName(const char *winName) {
 	::GetWindowThreadProcessId(hwnd, &pid);
 	if (!pid) return false;
 
-	return ProcessSpawner::Open(pid);
+	return ProcessSpawner::Get(pid);
 }
 
-CProcess *ProcessSpawner::OpenByProcessName(const char *processName) {
+CProcess *ProcessSpawner::Get(const char *processName) {
 	HANDLE hProcessSnap;
 	PROCESSENTRY32 pe32;
 
@@ -32,7 +33,7 @@ CProcess *ProcessSpawner::OpenByProcessName(const char *processName) {
 		if (_stricmp(processName, pe32.szExeFile) == 0)
 		{
 			::CloseHandle(hProcessSnap);
-			return ProcessSpawner::Open(pe32.th32ProcessID);
+			return ProcessSpawner::Get(pe32.th32ProcessID);
 		}
 
 	} while (::Process32Next(hProcessSnap, &pe32));
@@ -43,12 +44,12 @@ error:
 	return NULL;
 }
 
-CProcess *ProcessSpawner::Open(DWORD pid) {
-	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+CProcess *ProcessSpawner::Get(unsigned int processId) {
+	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, FALSE, processId);
 	if (!hProcess)
 		return NULL;
 
-	CProcess *process = new CProcess(hProcess);
+	CProcess *process = new Win32Process(hProcess);
 	if (!process) {
 		::CloseHandle(hProcess);
 		return NULL;
@@ -57,7 +58,7 @@ CProcess *ProcessSpawner::Open(DWORD pid) {
 	return process;
 }
 
-CProcess *ProcessSpawner::Create(const char *appName, CThread::ThreadState initalState, const char *initialWorkpath, CProcess::CreationError *pErr, bool openMainThread) {
+CProcess *ProcessSpawner::Create(const char *appFileName, CThread::ThreadState initalState, const char *initialWorkpath, CProcess::CreationError *pErr) {
 	CProcess *process;
 	DWORD _flags;
 	STARTUPINFO si;
@@ -71,7 +72,7 @@ CProcess *ProcessSpawner::Create(const char *appName, CThread::ThreadState inita
 	else if (initalState == CThread::SUSPENDED)
 		_flags = CREATE_SUSPENDED;
 
-	int res = ::CreateProcess(NULL, (char*)appName, NULL, NULL, FALSE, _flags, NULL, initialWorkpath, &si, &pi);
+	int res = ::CreateProcess(NULL, (char*)appFileName, NULL, NULL, FALSE, _flags, NULL, initialWorkpath, &si, &pi);
 	if (res == 0) {
 		if (pErr) {
 			int err = GetLastError();
@@ -86,15 +87,13 @@ CProcess *ProcessSpawner::Create(const char *appName, CThread::ThreadState inita
 	}
 
 	::CloseHandle(pi.hThread);
-	process = new CProcess(pi.hProcess);
+	process = new Win32Process(pi.hProcess);
 	if (!process) {
 		if (pErr)
-			*pErr = CProcess::OUT_OF_MEMORY;
+			*pErr = CProcess::SYSTEM_ERROR;
 		::CloseHandle(pi.hProcess);
 	}
 
-	if (openMainThread)
-		process->openThread(pi.dwThreadId);
 
 	if (pErr)
 		*pErr = CProcess::SUCCESS;

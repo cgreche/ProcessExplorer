@@ -219,11 +219,11 @@
     <ClInclude Include="uilib\ui\painting\transform.h">
       <Filter>Source Files\uilib\ui\painting</Filter>
     </ClInclude>
+    <ClInclude Include="process\win32process.h">
+      <Filter>Source Files\process</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="process\process.cpp">
-      <Filter>Source Files\process</Filter>
-    </ClCompile>
     <ClCompile Include="ProcessSpawner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -415,6 +415,9 @@
     </ClCompile>
     <ClCompile Include="uilib\ui\painting\transform.cpp">
       <Filter>Source Files\uilib\ui\painting</Filter>
+    </ClCompile>
+    <ClCompile Include="process\win32process.cpp">
+      <Filter>Source Files\process</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

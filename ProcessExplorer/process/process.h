@@ -1,17 +1,17 @@
 
 //Process
 //Filename: process.h
-//Last edit: 05/01/2018 00:22 (UTC-3)
+//Last edit: 02/01/2018 21:57 (UTC-3)
 //Author: CGR
 
 #ifndef __PROCESS_H__
 #define __PROCESS_H__
 
-#include <windows.h>
-
 #include <list>
 #include <vector>
 
+#define INFINITE            0xFFFFFFFF
+#define MAX_PATH            260
 
 struct ProcessBasicInfo
 {
@@ -19,13 +19,13 @@ struct ProcessBasicInfo
 	char name[MAX_PATH];
 };
 
+struct ThreadBasicInfo {
+	unsigned int id;
+	char name[MAX_PATH];
+};
+
 class CThread
 {
-	DWORD m_threadId;
-	HANDLE m_hThread;
-	
-	~CThread();
-	
 public:
 	enum ThreadState
 	{
@@ -33,70 +33,49 @@ public:
 		SUSPENDED
 	};
 
-	CThread(HANDLE hThread);
-	
-	bool suspend();
-	bool resume();
+	virtual bool suspend() = 0;
+	virtual bool resume() = 0;
+	virtual int sync(unsigned long time = INFINITE) = 0;
 
-	void wait(DWORD time = INFINITE);
+	virtual void exit(int code = 0) = 0;
 
-	int exitCode();
-	bool isActive();
-	void close();
-	void terminate(int code = 0);
-
-	DWORD id() { return m_threadId; }
-	HANDLE internalHandle() { return m_hThread; }
+	virtual unsigned int id() const = 0;
+	virtual void *internalHandle() const = 0;
+	virtual int exitCode() const = 0;
+	virtual bool active() const = 0;
 
 };
 
 class CProcess
 {
-	DWORD m_processId;
-	HANDLE m_hProcess;
-	std::vector<CThread*> m_threadList;
-
-	void removeAllThreads();
-	void removeThread();
-
-	~CProcess();
 
 public:
-
 	enum CreationError
 	{
 		SUCCESS = 0,
 		FILE_NOT_FOUND,
 		BAD_SYSTEM_EXECUTABLE_FILE,
-		OUT_OF_MEMORY,
+		SYSTEM_ERROR,
 	};
 
-	CProcess(HANDLE hProcess);
+	virtual const void *alloc(size_t size) = 0;
+	virtual void free(const void *address) = 0;
+	virtual bool write(const void *address, const unsigned char *inputBuffer, size_t size) = 0;
+	virtual bool read(const void *address, unsigned char *outputBuffer, size_t size) = 0;
 
-	BYTE *alloc(size_t size);
-	void free(BYTE *lpAddr);
-	bool write(LPVOID lpAddr,  LPVOID lpBuffer, DWORD nSize);
-	bool read(LPVOID lpAddr,  LPVOID lpBuffer, DWORD nSize);
+	virtual void wait(unsigned long timeout = INFINITE) = 0;
+	virtual void sync(unsigned long timeout = INFINITE) = 0;
+	virtual void exit(int code = 0) = 0;
 
-	void wait(DWORD timeout = INFINITE);
-	void sync(DWORD timeout = INFINITE);
+	virtual CThread *createThread(const void *startAddress, void *param, CThread::ThreadState initialState) = 0;
 
-	int exitCode();
-	bool isActive();
-	void close();
-	void terminate(int code = 0);
+	virtual unsigned int id() const = 0;
+	virtual const void *internalHandle() const = 0;
+	virtual int exitCode() const = 0;
+	virtual bool active() const = 0;
+	virtual std::vector<int> threadList() const = 0;
+	virtual CThread *thread(unsigned int threadId) const = 0;
 
-	CThread *createThread(LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParam, CThread::ThreadState initialState);
-	CThread *openThread(DWORD id);
-
-	bool is64BitProcess();
-
-	HWND getMainWindow();
-
-	std::vector<CThread*>& threadList();
-
-	DWORD id() { return m_processId; }
-	HANDLE internalHandle() { return m_hProcess; }
 };
 
 #endif

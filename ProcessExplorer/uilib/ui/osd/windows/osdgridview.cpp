@@ -1,7 +1,7 @@
 
 //OSDGridView
 // File: osdgridview.cpp
-// Last edit: 28/09/2017 13:49 (UTC-3)
+// Last edit: 07/01/2018 15:24 (UTC-3)
 // Author: CGR
 
 #include "..\\..\\uibase.h"
@@ -30,8 +30,8 @@ namespace uilib {
 			of the list view control must not have the HDS_FULLDRAG style set.
 			Note that the HDS_FULLDRAG style is ignored in versions of ComCtl32.dll prior to 4.70.
 			*/
-			int style = GetWindowLongPtr(header, GWL_STYLE);
-			SetWindowLongPtr(header, GWL_STYLE, (LONG)style | HDS_HOTTRACK);
+			LONG_PTR style = ::GetWindowLongPtr(header, GWL_STYLE);
+			::SetWindowLongPtr(header, GWL_STYLE, style | HDS_HOTTRACK);
 		}
 
 		ListView_SetExtendedListViewStyle(m_hwnd, LVS_EX_FULLROWSELECT);
@@ -86,8 +86,19 @@ namespace uilib {
 		int count = ListView_GetItemCount(m_hwnd);
 		if (rowCount < count) {
 			for (int i = rowCount; i < count; ++i) {
-				BOOL result = ListView_DeleteItem(m_hwnd, 0);
-				int a = 1;
+				//All items are invalid, we need to remove the reference
+				LVITEM lvi;
+				lvi.mask = LVIF_PARAM;
+				lvi.iItem = i;
+				lvi.iSubItem = 0;
+				lvi.lParam = (LPARAM)NULL;
+				BOOL result = ListView_SetItem(m_hwnd, &lvi);
+				if (!result)
+					int a = 1;
+			}
+
+			for (int i = rowCount; i < count; ++i) {
+				BOOL result = ListView_DeleteItem(m_hwnd, rowCount);
 			}
 		}
 		else {
@@ -327,7 +338,7 @@ namespace uilib {
 
 			case CDDS_SUBITEM | CDDS_ITEMPREPAINT: //Before a subitem is drawn
 			{
-				int row = lplvcd->nmcd.dwItemSpec;
+				int row = (int)lplvcd->nmcd.dwItemSpec;
 				int col = lplvcd->iSubItem;
 				ListViewItem *lvitem = ref().m_items[row][col];
 				if (lvitem) {
