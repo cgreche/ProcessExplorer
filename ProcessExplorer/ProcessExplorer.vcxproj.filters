@@ -222,6 +222,12 @@
     <ClInclude Include="process\win32process.h">
       <Filter>Source Files\process</Filter>
     </ClInclude>
+    <ClInclude Include="process\thread.h">
+      <Filter>Source Files\process</Filter>
+    </ClInclude>
+    <ClInclude Include="process\win32thread.h">
+      <Filter>Source Files\process</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ProcessSpawner.cpp">
@@ -417,6 +423,9 @@
       <Filter>Source Files\uilib\ui\painting</Filter>
     </ClCompile>
     <ClCompile Include="process\win32process.cpp">
+      <Filter>Source Files\process</Filter>
+    </ClCompile>
+    <ClCompile Include="process\win32thread.cpp">
       <Filter>Source Files\process</Filter>
     </ClCompile>
   </ItemGroup>

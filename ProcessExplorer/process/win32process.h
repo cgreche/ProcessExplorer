@@ -9,42 +9,10 @@
 
 #include <windows.h>
 
-#include <list>
 #include <vector>
 
 #include "process.h"
-
-class Win32Thread : public CThread
-{
-	DWORD m_threadId;
-	HANDLE m_hThread;
-
-	Win32Thread(HANDLE handle);
-	~Win32Thread();
-
-	void close();
-
-public:
-	friend class Win32Process;
-	enum ThreadState
-	{
-		NORMAL = 0,
-		SUSPENDED
-	};
-
-	virtual bool suspend();
-	virtual bool resume();
-
-	virtual int sync(unsigned long time = INFINITE);
-
-	virtual int exitCode() const;
-	virtual bool active() const;
-	virtual void exit(int code = 0);
-
-	virtual unsigned int id() const { return (unsigned int)m_threadId; }
-	virtual void* internalHandle() const { return (void*)m_hThread; }
-
-};
+#include "win32thread.h"
 
 class Win32Process : public CProcess
 {
@@ -59,14 +27,6 @@ class Win32Process : public CProcess
 
 public:
 	friend class ProcessSpawner;
-
-	enum CreationError
-	{
-		SUCCESS = 0,
-		FILE_NOT_FOUND,
-		BAD_SYSTEM_EXECUTABLE_FILE,
-		OUT_OF_MEMORY,
-	};
 
 	virtual const void *alloc(size_t size);
 	virtual void free(const void *address);
