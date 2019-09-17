@@ -74,13 +74,38 @@ static void buttonSearchDll_onClick(Button &button) {
 	}
 }
 
+void injectDLL32(CProcess *process, const string &dllPath) {
+	FARPROC loadLibraryAddr = ::GetProcAddress(::GetModuleHandleA("kernel32.dll"), "LoadLibraryA");
+	const void *stub = process->alloc(260);
+	process->write(stub, (const unsigned char*)dllPath.data(), dllPath.length());
+	CThread* thread = process->createThread(loadLibraryAddr, (void*)stub, CThread::NORMAL);
+	if (thread) {
+		thread->sync();
+	}
+	process->free(stub);
+}
+
+void injectDLL64(CProcess *process, const string &dllPath) {
+
+}
+
+void injectDLL(CProcess *process, const string &dllPath) {
+	bool is64BitProcess;
+	//is32BitProcess = !process->is64BitProcess();
+	is64BitProcess = false;
+	if (is64BitProcess)
+		injectDLL64(process, dllPath);
+	else
+		injectDLL32(process, dllPath);
+
+}
+
 static void buttonLoadDll_onClick(Button &button) {
 	MainWindow *mainWindow = (MainWindow*)button.param();
 	string &dllPath = mainWindow->editDllPath.text();
 	if (dllPath == "")
 		return;
 
-	//todo: get selected row
 	if (mainWindow->grid.selectedRow() == -1)
 		return;
 	ListViewItem* item = mainWindow->grid.item(mainWindow->grid.selectedRow(), 0);
@@ -92,16 +117,7 @@ static void buttonLoadDll_onClick(Button &button) {
 			return;
 		}
 
-		//bool is32BitProcess = !process->is64BitProcess();
-
-		FARPROC loadLibraryAddr = ::GetProcAddress(::GetModuleHandle(L"kernel32.dll"), "LoadLibraryA");
-		const void *stub = process->alloc(260);
-		process->write(stub, (const unsigned char*)dllPath.data(), dllPath.length());
-		CThread* thread = process->createThread(loadLibraryAddr, (void*)stub, CThread::NORMAL);
-		if (thread) {
-			thread->sync();
-		}
-		process->free(stub);
+		injectDLL(process, dllPath);
 		//TODO: deal with memory leak here
 	}
 }
@@ -122,20 +138,12 @@ static void buttonLoadProcess_onClick(Button &button) {
 	MainWindow *mainWindow = (MainWindow*)button.param();
 	string &appName = mainWindow->editProcessPath.text();
 	string &dllName = mainWindow->editDllPath.text();
-	if (appName == "" || dllName == "")
-		return;
+	//if (appName == "" || dllName == "")
+	//	return;
 	CProcess *process = ProcessSpawner::Create(appName.data(), CThread::SUSPENDED);
 	if (process) {
 		CThread *mainThread = process->thread(process->threadList()[0]);
-
-		FARPROC loadLibraryAddr = ::GetProcAddress(::GetModuleHandle(L"kernel32.dll"), "LoadLibraryA");
-		const void *stub = process->alloc(256);
-		process->write(stub, (const unsigned char*)dllName.data(), dllName.length());
-		CThread* thread = process->createThread(loadLibraryAddr, (void*)stub, CThread::NORMAL);
-		if (thread) {
-			thread->sync();
-		}
-		process->free(stub);
+		injectDLL(process, dllName);
 
 		mainThread->resume();
 		mainThread->sync();

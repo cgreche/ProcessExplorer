@@ -86,14 +86,14 @@ CProcess *ProcessSpawner::Create(const char *appFileName, CThread::ThreadState i
 		return NULL;
 	}
 
-	::CloseHandle(pi.hThread);
-	process = new Win32Process(pi.hProcess);
+	process = new Win32Process(pi);
 	if (!process) {
 		if (pErr)
 			*pErr = CProcess::SYSTEM_ERROR;
+		::CloseHandle(pi.hThread);
 		::CloseHandle(pi.hProcess);
+		return NULL;
 	}
-
 
 	if (pErr)
 		*pErr = CProcess::SUCCESS;

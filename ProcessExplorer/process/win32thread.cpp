@@ -8,25 +8,22 @@
 #include <windows.h>
 #include "win32thread.h"
 
-void Win32Thread::close()
-{
-	if (m_hThread != NULL)
-	{
-		::CloseHandle(m_hThread);
-		m_hThread = 0;
-	}
-	delete this;
-}
-
 Win32Thread::Win32Thread(HANDLE hThread)
 {
 	m_hThread = hThread;
 	m_threadId = ::GetThreadId(hThread);
 }
 
-Win32Thread::~Win32Thread()
+int Win32Thread::release()
 {
-	close();
+	if (m_hThread != NULL)
+	{
+		::CloseHandle(m_hThread);
+		m_hThread = 0;
+	}
+
+	delete this;
+	return 0;
 }
 
 bool Win32Thread::suspend()

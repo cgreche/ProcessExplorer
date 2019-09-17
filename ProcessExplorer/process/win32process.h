@@ -10,6 +10,7 @@
 #include <windows.h>
 
 #include <vector>
+#include <map>
 
 #include "process.h"
 #include "win32thread.h"
@@ -18,16 +19,18 @@ class Win32Process : public CProcess
 {
 	DWORD m_processId;
 	HANDLE m_hProcess;
-	std::vector<int> m_threadList;
+	std::map<DWORD, CThread*> m_threads;
 
 	Win32Process(HANDLE handle);
-	~Win32Process();
+	Win32Process(const PROCESS_INFORMATION &pi);
 
-	CThread *openThread(DWORD threadId) const;
-
+	CThread *openThread(DWORD threadId);
+	
 public:
 	friend class ProcessSpawner;
 
+	virtual int release();
+	
 	virtual const void *alloc(size_t size);
 	virtual void free(const void *address);
 	virtual bool write(const void *address, const unsigned char *inputBuffer, size_t size);
@@ -35,10 +38,6 @@ public:
 
 	virtual void wait(unsigned long timeout = INFINITE);
 	virtual void sync(unsigned long timeout = INFINITE);
-
-	virtual int exitCode() const;
-	virtual bool active() const;
-	virtual void close();
 	virtual void exit(int code = 0);
 
 	virtual CThread *createThread(const void *address, void *param, CThread::ThreadState initialState);
@@ -47,6 +46,8 @@ public:
 
 	virtual unsigned int id() const { return m_processId; }
 	virtual const void *internalHandle() const { return m_hProcess; }
+	virtual int exitCode() const;
+	virtual bool active() const;
 
 	HWND getMainWindow();
 };

@@ -23,7 +23,6 @@ struct ProcessBasicInfo
 
 class CProcess
 {
-
 public:
 	enum CreationError
 	{
@@ -32,6 +31,8 @@ public:
 		BAD_SYSTEM_EXECUTABLE_FILE,
 		SYSTEM_ERROR,
 	};
+
+	virtual int release() = 0;
 
 	virtual const void *alloc(size_t size) = 0;
 	virtual void free(const void *address) = 0;
@@ -50,7 +51,6 @@ public:
 	virtual bool active() const = 0;
 	virtual std::vector<int> threadList() const = 0;
 	virtual CThread *thread(unsigned int threadId) const = 0;
-
 };
 
 #endif

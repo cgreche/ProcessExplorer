@@ -17,24 +17,22 @@ class Win32Thread : public CThread
 	HANDLE m_hThread;
 
 	Win32Thread(HANDLE handle);
-	~Win32Thread();
-
-	void close();
 
 public:
 	friend class Win32Process;
+
+	virtual int release();
 
 	virtual bool suspend();
 	virtual bool resume();
 
 	virtual int sync(unsigned long time = INFINITE);
-
-	virtual int exitCode() const;
-	virtual bool active() const;
 	virtual void exit(int code = 0);
 
 	virtual unsigned int id() const { return (unsigned int)m_threadId; }
 	virtual void* internalHandle() const { return (void*)m_hThread; }
+	virtual int exitCode() const;
+	virtual bool active() const;
 };
 
 #endif

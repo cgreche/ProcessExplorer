@@ -24,6 +24,8 @@ public:
 		SUSPENDED
 	};
 
+	virtual int release() = 0;
+
 	virtual bool suspend() = 0;
 	virtual bool resume() = 0;
 	virtual int sync(unsigned long time = INFINITE) = 0;
@@ -34,7 +36,6 @@ public:
 	virtual void *internalHandle() const = 0;
 	virtual int exitCode() const = 0;
 	virtual bool active() const = 0;
-
 };
 
 #endif

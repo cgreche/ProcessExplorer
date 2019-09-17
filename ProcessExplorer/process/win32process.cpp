@@ -15,9 +15,22 @@ Win32Process::Win32Process(HANDLE hProcess)
 	m_processId = ::GetProcessId(m_hProcess);
 }
 
-Win32Process::~Win32Process()
+Win32Process::Win32Process(const PROCESS_INFORMATION &pi)
 {
+	m_hProcess = pi.hProcess;
+	m_processId = pi.dwProcessId;
+	m_threads.insert(std::pair<DWORD,CThread*>(pi.dwThreadId, new Win32Thread(pi.hThread)));
+}
 
+int Win32Process::release()
+{
+	if (m_hProcess != NULL)
+	{
+		::CloseHandle(m_hProcess);
+		m_hProcess = 0;
+	}
+	delete this;
+	return 0;
 }
 
 const void *Win32Process::alloc(size_t size)
@@ -81,20 +94,6 @@ bool Win32Process::active() const
 	return ::GetExitCodeProcess(m_hProcess, &exitcode) && exitcode == STILL_ACTIVE;
 }
 
-
-
-void Win32Process::close()
-{
-	if (m_hProcess != NULL)
-	{
-		::CloseHandle(m_hProcess);
-		m_hProcess = 0;
-	}
-
-	delete this;
-}
-
-
 void Win32Process::exit(int code)
 {
 	if (active())
@@ -130,44 +129,64 @@ CThread *Win32Process::createThread(const void *address, void *param, CThread::T
 }
 
 
-CThread *Win32Process::openThread(DWORD threadId) const
+CThread *Win32Process::openThread(DWORD threadId)
 {
-	//TODO: search in a map and return, open otherwise
-
-	/*
 	CThread *thread;
+
+	std::map<DWORD, CThread*>::const_iterator it = m_threads.find(threadId);
+	if(it != m_threads.end())
+		return it->second;
 
 	HANDLE hThread = ::OpenThread(THREAD_ALL_ACCESS,FALSE,threadId);
 	if(hThread == NULL)
-	return NULL;
+		return NULL;
 
-	thread = new CThread(hThread);
+	thread = new Win32Thread(hThread);
 	if(!thread) {
-	::CloseHandle(hThread);
-	return NULL;
-	}
-	else {
-	m_threadList.push_back(thread);
+		::CloseHandle(hThread);
+		return NULL;
 	}
 
+	m_threads.insert(std::pair<DWORD, CThread*>(threadId, thread));
 	return thread;
-	*/
-	return NULL;
 }
 
 std::vector<int> Win32Process::threadList() const
 {
-	return m_threadList;
+	std::vector<int> threadList;
+
+	bool error;
+	HANDLE hProcessSnap;
+	THREADENTRY32 te32;
+
+	// Take a snapshot of all processes in the system.
+	hProcessSnap = ::CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, this->id());
+
+	if (hProcessSnap == INVALID_HANDLE_VALUE)
+		return threadList;
+
+	// Set the size of the structure before using it.
+	te32.dwSize = sizeof(THREADENTRY32);
+
+	if (::Thread32First(hProcessSnap, &te32)) {
+		do {
+			if(te32.th32OwnerProcessID == this->id())
+				threadList.push_back(te32.th32ThreadID);
+		} while (::Thread32Next(hProcessSnap, &te32));
+	}
+
+	::CloseHandle(hProcessSnap);
+	return threadList;
 }
 
 CThread *Win32Process::thread(unsigned int threadId) const
 {
-	return openThread(threadId);
+	return const_cast<Win32Process*>(this)->openThread(threadId);
 }
 
 
 
-struct st_getMainWindow
+static struct st_getMainWindow
 {
 	CProcess *process;
 	HWND mainHwnd;
